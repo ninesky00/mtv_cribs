@@ -41,4 +41,38 @@ class BuildingTest < Minitest::Test
         @building.add_unit(@unit2)
         assert_equal 1099.5, @building.average_rent
     end
+
+    def test_can_select_rented_units
+        @renter1 = Renter.new("Spencer")
+        @building.add_unit(@unit1)
+        @building.add_unit(@unit2)
+        @building.add_unit(@unit3)
+        assert_equal [], @building.rented_units
+        @unit2.add_renter(@renter1)
+        assert_equal [@unit2], @building.rented_units
+    end
+
+    def test_can_find_renter_with_highest_rent
+        @renter1 = Renter.new("Spencer")
+        @renter2 = Renter.new("Jessie")
+        @renter3 = Renter.new("Max")
+        @building.add_unit(@unit1)
+        @building.add_unit(@unit2)
+        @building.add_unit(@unit3)
+        @unit2.add_renter(@renter1)
+        assert_equal @unit2, @building.renter_with_highest_rent
+        @unit1.add_renter(@renter2)
+        assert_equal @unit1, @building.renter_with_highest_rent
+        @unit3.add_renter(@renter3)
+        assert_equal @unit1, @building.renter_with_highest_rent
+    end
+
+    def test_can_group_units_by_number_of_bedrooms
+        @building.add_unit(@unit1)
+        @building.add_unit(@unit2)
+        @building.add_unit(@unit3)
+        @building.add_unit(@unit4)
+        expected = {3 => [@unit4], 2 => [@unit2, @unit3], 1 => [@unit1]}
+        assert_equal expected, @building.units_by_number_of_bedrooms
+    end
 end
