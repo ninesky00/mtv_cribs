@@ -20,7 +20,7 @@ class RenterTest < Minitest::Test
     end
 
     def test_apartment_can_add_renter
-        assert_nil, @unit1.renter
+        assert_nil @unit1.renter
         @unit1.add_renter(@renter1)
         assert_instance_of Renter, @unit1.renter 
     end
